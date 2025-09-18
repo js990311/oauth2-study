@@ -1,0 +1,11 @@
+# docker-compose.yml
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: keycloak_dev
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+    ports:
+      - "8083:8080"
+    command: start-dev
