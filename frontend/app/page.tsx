@@ -14,6 +14,11 @@ export default function Home() {
               <li>
                   <Link href={"/mypage"}>마이페이지 가기</Link>
               </li>
+              <li>
+                  <Link href={"/login-for-spring"}>
+                      스프링 로그인하러 가기
+                  </Link>
+              </li>
           </ul>
       </div>
   );

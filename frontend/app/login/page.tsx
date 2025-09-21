@@ -1,8 +1,11 @@
 "use client"
 
 import {useRouter} from "next/navigation";
+import {useState} from "react";
 
 export default function LoginPage() {
+    const [loading, setLoading] = useState<boolean>(true);
+    const [isFail, setIsFail] = useState<boolean>(false);
 
     const router = useRouter();
 
@@ -21,10 +24,17 @@ export default function LoginPage() {
 
     return (
         <div>
-            로그인페이지
-            <button onClick={()=>onLogin()}>
-                KeyCloak 로그인
-            </button>
+            <h3>
+                로그인페이지
+            </h3>
+            <ul>
+                <li>
+                    <button onClick={() => onLogin()}>
+                        KeyCloak 로그인
+                    </button>
+                </li>
+            </ul>
+
         </div>
     )
 }
