@@ -1,5 +1,6 @@
 package com.study.study.controller;
 
+import com.study.study.service.TokenValidationService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import java.util.Map;
 @RequestMapping("/api")
 @RestController
 public class TokenController {
+    private final TokenValidationService tokenValidationService;
 
     /**
      * AccessToken을 header로 받아서 처리하는 api입니다
@@ -28,6 +30,11 @@ public class TokenController {
         if(authorization == null || !authorization.startsWith("Bearer ")){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "token not found"));
         }
-        return ResponseEntity.status(HttpStatus.OK).body(Map.of("token", "asdf"));
+        try{
+            tokenValidationService.validate(authorization.substring(7));
+            return ResponseEntity.status(HttpStatus.OK).body(Map.of("token", "asdf"));
+        }catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "token validation fail"));
+        }
     }
 }
