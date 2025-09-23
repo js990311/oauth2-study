@@ -2,9 +2,11 @@ package com.study.study.config;
 
 import com.auth0.jwk.JwkProvider;
 import com.auth0.jwk.JwkProviderBuilder;
+import com.study.study.jwk.provider.SimpleJwkProvider;
 import com.study.study.service.TokenValidationService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -32,4 +34,17 @@ public class JwtConfig {
     public TokenValidationService tokenValidationService(){
         return new TokenValidationService(issuerUri, jwkProvider());
     }
+
+    @Bean
+    public WebClient webClient(WebClient.Builder builder){
+        return builder
+                .baseUrl(issuerUri)
+                .build();
+    }
+
+    @Bean
+    public SimpleJwkProvider simpleJwkProvider(WebClient webClient){
+        return new SimpleJwkProvider(issuerUri, webClient);
+    }
+
 }
