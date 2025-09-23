@@ -4,11 +4,16 @@ import com.auth0.jwk.*;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.study.study.jwk.dto.SimpleJwk;
+import com.study.study.jwk.dto.SimpleJwks;
+import com.study.study.jwk.provider.SimpleJwkProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.net.URL;
+import java.security.PublicKey;
 import java.security.interfaces.RSAPublicKey;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 @RequiredArgsConstructor
@@ -16,16 +21,26 @@ import java.util.concurrent.TimeUnit;
 public class TokenValidationService {
     private final String issuerUri;
     private final JwkProvider jwkProvider;
+    private final SimpleJwkProvider simpleJwkProvider;
 
     public DecodedJWT validate(String token) {
         DecodedJWT decodedToken = JWT.decode(token);
         try{
-            Jwk jwk = jwkProvider.get(decodedToken.getKeyId());
-            Algorithm algorithm = Algorithm.RSA256((RSAPublicKey) jwk.getPublicKey(), null);
-            return JWT.require(algorithm)
-                    .withIssuer(issuerUri)
-                    .build()
-                    .verify(token);
+            SimpleJwks simpleJwks = simpleJwkProvider.get();
+            Optional<SimpleJwk> opt = simpleJwks.findKey(decodedToken.getKeyId());
+            SimpleJwk key = opt.orElseThrow(() -> {
+                throw new RuntimeException("INVALID KeyId");
+            });
+            PublicKey publicKey = key.getPublicKey();
+            if(key.getAlg().equals("RS256")){
+                Algorithm algorithm = Algorithm.RSA256((RSAPublicKey) publicKey, null);
+                return JWT.require(algorithm)
+                        .withIssuer(issuerUri)
+                        .build()
+                        .verify(token);
+            }else {
+                throw new Exception("UNSUPPORTED ALGORITHM");
+            }
         }catch (Exception e){
             throw new RuntimeException(e);
         }

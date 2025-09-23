@@ -31,8 +31,8 @@ public class JwtConfig {
     }
 
     @Bean
-    public TokenValidationService tokenValidationService(){
-        return new TokenValidationService(issuerUri, jwkProvider());
+    public TokenValidationService tokenValidationService(SimpleJwkProvider simpleJwkProvider){
+        return new TokenValidationService(issuerUri, jwkProvider(), simpleJwkProvider);
     }
 
     @Bean
