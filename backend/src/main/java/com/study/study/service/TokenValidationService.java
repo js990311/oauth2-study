@@ -10,11 +10,9 @@ import com.study.study.jwk.provider.SimpleJwkProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.net.URL;
 import java.security.PublicKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 
 @RequiredArgsConstructor
 @Service

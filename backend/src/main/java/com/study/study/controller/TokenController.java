@@ -1,5 +1,7 @@
 package com.study.study.controller;
 
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.study.study.domain.user.UserLoginService;
 import com.study.study.service.TokenValidationService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ import java.util.Map;
 @RestController
 public class TokenController {
     private final TokenValidationService tokenValidationService;
+    private final UserLoginService userLoginService;
 
     /**
      * AccessToken을 header로 받아서 처리하는 api입니다
@@ -31,7 +34,8 @@ public class TokenController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "token not found"));
         }
         try{
-            tokenValidationService.validate(authorization.substring(7));
+            DecodedJWT token = tokenValidationService.validate(authorization.substring(7));
+            userLoginService.login(token);
             return ResponseEntity.status(HttpStatus.OK).body(Map.of("token", "asdf"));
         }catch (Exception ex){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "token validation fail"));
