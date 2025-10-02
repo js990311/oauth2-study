@@ -7,9 +7,9 @@ export default function Home() {
         메인페이지
           <ul>
               <li>
-                <Link href={"/login"}>
-                    로그인하러 가기
-                </Link>
+                  <Link href={"/login"}>
+                      로그인하러 가기
+                  </Link>
               </li>
               <li>
                   <Link href={"/mypage"}>마이페이지 가기</Link>
@@ -19,6 +19,12 @@ export default function Home() {
                       스프링 로그인하러 가기
                   </Link>
               </li>
+              <li>
+                  <Link href={"/refresh"}>
+                      리프레시 하기
+                  </Link>
+              </li>
+
           </ul>
       </div>
   );

@@ -40,10 +40,19 @@ export async function GET(request: NextRequest) {
         const redirectUrl = new URL('/', request.nextUrl.origin);
         const resp = NextResponse.redirect(redirectUrl);
 
+        // access 토큰 저장
         resp.cookies.set('access_token', tokens.access_token, {
             httpOnly: true,
             path: '/'
         });
+
+        // refresh 토큰 저장
+        resp.cookies.set('refresh_token', tokens.refresh_token, {
+            httpOnly: true,
+            path: '/'
+        });
+
+        console.log(tokens);
 
         return resp;
     }catch (error) {
