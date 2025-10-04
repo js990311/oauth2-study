@@ -1,7 +1,10 @@
 package com.study.study.controller;
 
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.study.study.controller.resp.LoginResponse;
 import com.study.study.domain.user.UserLoginService;
+import com.study.study.jwk.exception.CustomTokenException;
 import com.study.study.service.TokenValidationService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -36,9 +39,11 @@ public class TokenController {
         try{
             DecodedJWT token = tokenValidationService.validate(authorization.substring(7));
             userLoginService.login(token);
-            return ResponseEntity.status(HttpStatus.OK).body(Map.of("token", "asdf"));
+            return ResponseEntity.status(HttpStatus.OK).body(new LoginResponse(20, "LOGIN SUCCESS"));
+        }catch (CustomTokenException ex) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new LoginResponse(ex.getCode(), ex.getMessage()));
         }catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "token validation fail"));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new LoginResponse(50, "SERVER ERROR"));
         }
     }
 }

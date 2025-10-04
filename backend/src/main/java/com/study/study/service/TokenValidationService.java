@@ -3,9 +3,11 @@ package com.study.study.service;
 import com.auth0.jwk.*;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.study.study.jwk.dto.SimpleJwk;
 import com.study.study.jwk.dto.SimpleJwks;
+import com.study.study.jwk.exception.CustomTokenException;
 import com.study.study.jwk.provider.SimpleJwkProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -39,7 +41,9 @@ public class TokenValidationService {
             }else {
                 throw new Exception("UNSUPPORTED ALGORITHM");
             }
-        }catch (Exception e){
+        }catch (TokenExpiredException ex){
+            throw new CustomTokenException("TOKEN EXPIRED", 42);
+        } catch (Exception e){
             throw new RuntimeException(e);
         }
     }

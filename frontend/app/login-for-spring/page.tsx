@@ -1,22 +1,29 @@
 "use client"
 
 import {useState} from "react";
+import {LoginResponse} from "@/types/LoginResponse";
 
 export default function LoginForSpringPage(){
     const [loading, setLoading] = useState<boolean>(false);
     const [isFail, setIsFail] = useState<boolean>(false);
     const [isSucess, setIsSucess] = useState<boolean>(false);
     const [token, setToken] = useState<string>('');
+    const [message, setMessage] = useState<string>('');
 
     const onLogin = async () => {
         const resp = await fetch('/api/proxy/login');
-        const data = await resp.json();
-        setToken(data.token);
-        setLoading(false);
-        if(!resp.ok){
-            setIsFail(true);
-        }else {
+        const data: LoginResponse = await resp.json();
+
+        console.log(data);
+        setMessage(data.message);
+        if(data.code === 20){
             setIsSucess(true);
+            setMessage("로그인 성공");
+        }else {
+            setIsFail(true);
+            if(data.code === 42){
+                console.log("토큰 REFRESH 필요");
+            }
         }
     };
     
@@ -31,10 +38,10 @@ export default function LoginForSpringPage(){
                 로딩중
             </div>}
             {
-                isFail && <div>실패</div>
+                isFail && <div>{message}</div>
             }
             {
-                isSucess && <div>로그인 성공</div>
+                isSucess && <div>{message}</div>
             }
             <div>
                 <p>{token}</p>
