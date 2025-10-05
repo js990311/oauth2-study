@@ -18,9 +18,6 @@ export default async function refreshAuthTokens (refreshToken: string): tokens{
     }
 
     const tokens = await response.json();
-    console.log(tokens);
-
-
     return {
         access_token: tokens.access_token,
         refresh_token: tokens.refresh_token,
