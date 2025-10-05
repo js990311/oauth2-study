@@ -1,41 +1,28 @@
 import {NextRequest, NextResponse} from "next/server";
 import {cookies} from "next/headers";
+import {LoginResponse} from "@/types/LoginResponse";
+import refreshAuthTokens from "@/utils/refreshToken";
 
 
 
-export async function POST(req: NextRequest){
+export async function POST(req: NextRequest): Promise<NextResponse<LoginResponse>>{
     const cookieStore = await cookies();
     const refreshToken = cookieStore.get('refresh_token')?.value;
 
     if(!refreshToken){
-        return NextResponse.json({error: 'Refresh token not found'}, {status: 401});
+        return NextResponse.json({
+            code: 44,
+            message: 'refresh token not found',
+        }, {status: 401});
     }
 
     try {
-        const target = `${process.env.NEXT_PUBLIC_KEYCLOAK_URL}/realms/${process.env.NEXT_PUBLIC_KEYCLOAK_REALM}/protocol/openid-connect/token`;
+        const tokens = await refreshAuthTokens(refreshToken);
 
-        const response = await fetch(target, {
-            method: 'POST',
-            body: new URLSearchParams({
-                grant_type: 'refresh_token',
-                client_id: process.env.NEXT_PUBLIC_KEYCLOAK_CLIENT_ID,
-                client_secret: process.env.NEXT_PUBLIC_KEYCLOAK_CLIENT_SECRET,
-                refresh_token: refreshToken,
-            })
-        });
-
-        const tokens = await response.json();
-
-        console.log(tokens);
-
-        if(!response.ok){
-            return NextResponse.json({
-                error: 'Failed to fetch'
-            }, {status: 400});
-        }
-
-        const redirectUrl = new URL('/', req.nextUrl.origin);
-        const resp = NextResponse.redirect(redirectUrl);
+        const resp = NextResponse.json({
+            code: 20,
+            message: 'token refresh success',
+        }, {status: 200});
 
         // access 토큰 저장
         resp.cookies.set('access_token', tokens.access_token, {
@@ -50,8 +37,12 @@ export async function POST(req: NextRequest){
         });
 
         return resp;
+
     }catch (error){
         console.log(error);
-        return NextResponse.json({error: 'SERVER ERROR'}, {status: 500});
+        return NextResponse.json({
+            code: 50,
+            message: 'unknown error occurred',
+        }, {status: 500});
     }
 }
