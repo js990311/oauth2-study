@@ -2,6 +2,7 @@
 
 import {useRouter} from "next/navigation";
 import {useState} from "react";
+import {signIn} from "next-auth/react";
 
 export default function LoginPage() {
     const [loading, setLoading] = useState<boolean>(true);
@@ -31,6 +32,11 @@ export default function LoginPage() {
                 <li>
                     <button onClick={() => onLogin()}>
                         KeyCloak 로그인
+                    </button>
+                </li>
+                <li>
+                    <button onClick={() => signIn('keycloak')}>
+                        next-auth로 로그인
                     </button>
                 </li>
             </ul>

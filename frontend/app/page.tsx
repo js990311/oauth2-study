@@ -24,8 +24,8 @@ export default function Home() {
                       리프레시 하기
                   </Link>
               </li>
-
           </ul>
+
       </div>
   );
 }

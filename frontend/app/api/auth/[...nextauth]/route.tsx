@@ -6,7 +6,7 @@ export const authOptions = {
         KeycloakProvider({
             clientId: process.env.NEXT_PUBLIC_KEYCLOAK_CLIENT_ID,
             clientSecret: process.env.NEXT_PUBLIC_KEYCLOAK_CLIENT_SECRET,
-            issuer: process.env.NEXT_PUBLIC_KEYCLOAK_REALM,
+            issuer: `${process.env.NEXT_PUBLIC_KEYCLOAK_URL}/realms/${process.env.NEXT_PUBLIC_KEYCLOAK_REALM}`,
         })
     ],
 }
