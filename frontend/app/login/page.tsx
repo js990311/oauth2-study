@@ -3,6 +3,7 @@
 import {useRouter} from "next/navigation";
 import {useState} from "react";
 import {signIn} from "next-auth/react";
+import Link from "next/link";
 
 export default function LoginPage() {
     const [loading, setLoading] = useState<boolean>(true);
@@ -38,6 +39,9 @@ export default function LoginPage() {
                     <button onClick={() => signIn('keycloak')}>
                         next-auth로 로그인
                     </button>
+                </li>
+                <li>
+                    <Link href={"/login-for-spring"}>스프링 로그인하러 가기</Link>
                 </li>
             </ul>
 
