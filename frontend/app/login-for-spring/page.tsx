@@ -1,7 +1,7 @@
 "use client"
 
 import {useState} from "react";
-import {LoginResponse} from "@/types/LoginResponse";
+import {LoginResponse} from "@/src/types/LoginResponse";
 import {useSession} from "next-auth/react";
 import {session} from "next-auth/core/routes";
 

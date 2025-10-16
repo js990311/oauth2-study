@@ -1,6 +1,6 @@
 import {NextRequest, NextResponse} from "next/server";
 import {cookies} from "next/headers";
-import refreshAuthTokens, {withRetry} from "@/utils/refreshToken";
+import refreshAuthTokens, {withRetry} from "@/src/utils/refreshToken";
 
 async function fetchMyInfo(accessToken: String){
     const target = `${process.env.NEXT_PUBLIC_KEYCLOAK_URL}/realms/${process.env.NEXT_PUBLIC_KEYCLOAK_REALM}/protocol/openid-connect/userinfo`;

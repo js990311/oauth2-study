@@ -1,7 +1,7 @@
 import {NextRequest, NextResponse} from "next/server";
 import {cookies} from "next/headers";
-import {LoginResponse} from "@/types/LoginResponse";
-import refreshAuthTokens from "@/utils/refreshToken";
+import {LoginResponse} from "@/src/types/LoginResponse";
+import refreshAuthTokens from "@/src/utils/refreshToken";
 
 
 

@@ -1,6 +1,6 @@
 import {NextRequest, NextResponse} from "next/server";
 import {cookies} from "next/headers";
-import {withRetry} from "@/utils/refreshToken";
+import {withRetry} from "@/src/utils/refreshToken";
 
 async function fetchSpring(accessToken: string){
     const target = "http://localhost:8080/api/login";

@@ -1,7 +1,7 @@
 "use client"
 
 import {useState} from "react";
-import {LoginResponse} from "@/types/LoginResponse";
+import {LoginResponse} from "@/src/types/LoginResponse";
 
 export default function RefreshPage() {
     const [message, setMessage] = useState("리프레시 진행 전");
